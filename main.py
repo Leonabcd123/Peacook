@@ -77,9 +77,13 @@ class NPC:
             self.speed_y += amount
 
     def talk(self, text):
-        text_surface = font.render(text, True, (0, 0, 0))
-        text_rect = text_surface.get_rect(center=(400, 700))
-        screen.blit(text_surface, text_rect)
+        lines = text.split("\n")
+        y_offset = 700
+        for line in lines:
+            line_surface = font.render(line, True, (0, 0, 0))
+            line_rect = line_surface.get_rect(center=(400, y_offset))
+            screen.blit(line_surface, line_rect)
+            y_offset += line_surface.get_height() + 5
 
     def update(self, color, surface, offset):
         self.rect.x += self.speed_x
@@ -115,7 +119,8 @@ while True:
             npc.move("right", 1)
     elif npcs and npcs[0].rect.x == 440:
         if npcs[0].rect.y == 340:
-            npcs[0].talk("Me and mom are gonna get some milk, Don't do anything stupid, ok?")
+            text = "Dad:\nMe and mom are gonna get some milk, Don't do anything stupid, ok?\n(Press Space To Continue)"
+            npcs[0].talk(text)
         if skipped:
             for npc in npcs:
                 npc.move("down", 1)
