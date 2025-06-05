@@ -6,8 +6,9 @@ class Player(pygame.sprite.Sprite):
         self.img = pygame.image.load("peacock1.png").convert_alpha()
         self.img = pygame.transform.scale(self.img, (100, 100))
         self.rect = self.img.get_rect(center=(x, y))
+        self.pos = pygame.math.Vector2(self.rect.center)
         self.velocity = pygame.math.Vector2(0, 0)
-        self.speed = 5
+        self.speed = 200
         self.can_move = False
 
     def move(self):
@@ -24,11 +25,11 @@ class Player(pygame.sprite.Sprite):
         if self.velocity.length_squared() > 0:
             self.velocity = self.velocity.normalize() * self.speed
 
-    def update(self):
+    def update(self, dt):
         if self.can_move:
             self.move()
-        self.rect.x += self.velocity.x
-        self.rect.y += self.velocity.y
+        self.pos += self.velocity * dt
+        self.rect.center = (round(self.pos.x), round(self.pos.y))
 
     def draw(self, surface, offset):
         local_rect = self.rect.move(-offset[0], -offset[1])

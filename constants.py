@@ -13,12 +13,14 @@ font1 = pygame.font.SysFont("Arial", 25)
 font2 = pygame.font.SysFont("Arial", 50)
 text = "Dad:\nMe and mom are gonna get some milk, Don't do anything stupid, ok?\n(Press Space To Continue)"
 
-player = Player(380, 380)
+player = Player(300, 380)
 starting_room = Starting_Room(player)
 npcs = [NPC(500, 340, font1, screen), NPC(500, 420, font1, screen)]
-old = NPC(440, 650, font1, screen)
+old = NPC(380, 650, font1, screen)
 
-room_surface = pygame.Surface((starting_room.rect.width, starting_room.rect.height))
+room_surface = starting_room.img
+bg = pygame.image.load("bg.webp").convert_alpha()
+bg = pygame.transform.scale(bg, (800, 800))
 skipped = False
 
 delay_start_time = 0

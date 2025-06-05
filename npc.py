@@ -25,9 +25,9 @@ class NPC:
             return
 
         if direction == "right":
-            self.speed_x -= amount
-        elif direction == "left":
             self.speed_x += amount
+        elif direction == "left":
+            self.speed_x -= amount
         elif direction == "up":
             self.speed_y -= amount
         else:

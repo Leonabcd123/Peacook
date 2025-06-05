@@ -2,7 +2,9 @@ import pygame
 
 class Starting_Room:
     def __init__(self, player):
-        self.rect = pygame.Rect(175, 175, 450, 450)
+        self.img = pygame.image.load("room.webp").convert_alpha()
+        self.img = pygame.transform.scale(self.img, (450, 450))
+        self.rect = self.img.get_rect(topleft=(175, 175))
         self.player = player
 
     def update(self):
