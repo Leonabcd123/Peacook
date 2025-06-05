@@ -1,4 +1,4 @@
-import pygame
+from utilities import *
 
 class NPC:
     def __init__(self, x, y, font, screen):
@@ -7,9 +7,23 @@ class NPC:
         self.speed_y = 0
         self.font = font
         self.screen = screen
+        self.is_stopping = False
+        self.stop_start_time = 0
+        self.stop_duration = 1
 
     def move(self, direction, amount):
-        pygame.time.delay(1)
+        now = pygame.time.get_ticks()
+
+        if self.is_stopping:
+            if stop(self.stop_start_time, self.stop_duration):
+                self.is_stopping = False
+            else:
+                return
+        else:
+            self.is_stopping = True
+            self.stop_start_time = now
+            return
+
         if direction == "right":
             self.speed_x -= amount
         elif direction == "left":
