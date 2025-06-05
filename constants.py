@@ -11,6 +11,7 @@ clock = pygame.time.Clock()
 fps = 60
 font1 = pygame.font.SysFont("Arial", 25)
 font2 = pygame.font.SysFont("Arial", 50)
+text = "Dad:\nMe and mom are gonna get some milk, Don't do anything stupid, ok?\n(Press Space To Continue)"
 
 player = Player(380, 380)
 starting_room = Starting_Room(player)

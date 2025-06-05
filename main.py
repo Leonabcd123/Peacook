@@ -19,7 +19,6 @@ while True:
             npc.move("right", 2)
     elif npcs and npcs[0].rect.x == 440:
         if npcs[0].rect.y == 340:
-            text = "Dad:\nMe and mom are gonna get some milk, Don't do anything stupid, ok?\n(Press Space To Continue)"
             npcs[0].talk(text)
         if skipped:
             for npc in npcs:
