@@ -21,13 +21,14 @@ while True:
 
     if npcs and npcs[0].rect.x > 380:
         for npc in npcs:
-            npc.move("left", 150 * dt)
-    elif npcs and npcs[0].rect.x == 380:
+            npc.move("left", 100 * dt)
+
+    elif npcs and 375 < npcs[0].rect.x < 381:
         if npcs[0].rect.y == 340:
             npcs[0].talk(text)
         if skipped:
             for npc in npcs:
-                npc.move("down", 150 * dt)
+                npc.move("down", 100 * dt)
 
     room_offset = (starting_room.rect.left, starting_room.rect.top)
 
@@ -56,7 +57,7 @@ while True:
 
         elif delay_phase == 3:
             if old.rect.y > 380:
-                old.move("up", 125 * dt)
+                old.move("up", 90 * dt)
             old.update((0, 255, 0), current_room_surface, room_offset)
 
     screen.blit(current_room_surface, starting_room.rect.topleft)
