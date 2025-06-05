@@ -1,37 +1,6 @@
-from player import *
-from starting_room import Starting_Room
-from npc import NPC
 from utilities import *
+from constants import *
 import sys
-
-pygame.init()
-
-screen = pygame.display.set_mode((800, 800))
-pygame.display.set_caption("Peacook")
-clock = pygame.time.Clock()
-fps = 60
-font = pygame.font.SysFont("Arial", 25)
-
-player = Player(380, 380)
-starting_room = Starting_Room(player)
-npcs = [NPC(500, 340, font, screen), NPC(500, 420, font, screen)]
-old = NPC(440, 650, font, screen)
-
-room_surface = pygame.Surface((starting_room.rect.width, starting_room.rect.height))
-skipped = False
-
-delay_start_time = 0
-delay1_duration = 500
-delay2_duration = 3000
-delay_phase = 0
-
-TRANSPARENCY = 128
-
-waiting_surface = pygame.Surface((800, 800), pygame.SRCALPHA)
-waiting_surface.fill((128, 128, 128, TRANSPARENCY))
-waiting_rect = waiting_surface.get_rect(center=(400, 400))
-waiting_text = font.render("2000 Years Later...", True, (255, 255, 255))
-waiting_text_rect = waiting_text.get_rect(center=(400, 300))
 
 while True:
     screen.fill((224, 255, 255))
@@ -41,8 +10,9 @@ while True:
             pygame.quit()
             sys.exit()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and npcs[0].rect.x <= 440:
-                skipped = True
+            if not skipped:
+                if event.key == pygame.K_SPACE and npcs[0].rect.x <= 440:
+                    skipped = True
 
     if npcs and npcs[0].rect.x > 440:
         for npc in npcs:
