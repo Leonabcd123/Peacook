@@ -20,10 +20,18 @@ old = NPC(440, 650, font, screen)
 room_surface = pygame.Surface((starting_room.rect.width, starting_room.rect.height))
 skipped = False
 
-delay_started = False
 delay_start_time = 0
-delay_duration = 3000
-delay_done = False
+delay1_duration = 500
+delay2_duration = 3000
+delay_phase = 0
+
+TRANSPARENCY = 128
+
+waiting_surface = pygame.Surface((800, 800), pygame.SRCALPHA)
+waiting_surface.fill((128, 128, 128, TRANSPARENCY))
+waiting_rect = waiting_surface.get_rect(center=(400, 400))
+waiting_text = font.render("2000 Years Later...", True, (255, 255, 255))
+waiting_text_rect = waiting_text.get_rect(center=(400, 300))
 
 while True:
     screen.fill((224, 255, 255))
@@ -46,6 +54,9 @@ while True:
         if skipped:
             for npc in npcs:
                 npc.move("down", 2)
+            
+            
+
 
     room_surface.fill((128, 128, 128))
     room_offset = (starting_room.rect.left, starting_room.rect.top)
@@ -59,23 +70,29 @@ while True:
     player.draw(room_surface, room_offset)
 
     
-
     npcs = [npc for npc in npcs if starting_room.rect.colliderect(npc.rect)]
     if not npcs:
-        if not delay_done: 
-            if not delay_started:
-                delay_start_time = pygame.time.get_ticks()
-                delay_started = True    
-            if delay_started and pygame.time.get_ticks() - delay_start_time >= delay_duration:
-                color = (0, 255, 0)
-                stop(delay_start_time, delay_duration)
-                delay_done = True
-        else:
-            if old.rect.y > 380: 
+        if delay_phase == 0:
+            delay_start_time = pygame.time.get_ticks()
+            delay_phase = 1
+
+        elif delay_phase == 1:
+            if stop(delay_start_time, delay1_duration):
+                delay_phase = 2
+
+        elif delay_phase == 2:
+            if stop(delay_start_time, delay2_duration):
+                delay_phase = 3
+
+        elif delay_phase == 3:
+            if old.rect.y > 380:
                 old.move("up", 2)
-            old.update(color, room_surface, room_offset)
-        
+            old.update((0, 255, 0), room_surface, room_offset)
+
 
     screen.blit(room_surface, starting_room.rect.topleft)
+    if not npcs and delay_phase == 2:
+        screen.blit(waiting_surface, waiting_rect)
+        screen.blit(waiting_text, waiting_text_rect)
     pygame.display.update()
     clock.tick(fps)
