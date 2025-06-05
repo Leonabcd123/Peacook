@@ -1,6 +1,17 @@
 from utilities import *
 from constants import *
+from npc import *
+from player import *
+from starting_room import *
 import sys
+
+
+player = Player(300, 380)
+starting_room = Starting_Room(player)
+room_surface = starting_room.img
+npcs = [NPC(500, 340, screen), NPC(500, 420, screen)]
+old = NPC(380, 650, screen)
+
 
 while True:
 
@@ -25,8 +36,9 @@ while True:
 
     elif npcs and 375 < npcs[0].rect.x < 381:
         if npcs[0].rect.y == 340:
-            npcs[0].talk(text)
+            visible_width = npcs[0].talk(text, visible_width)
         if skipped:
+            visible_width = unroll_scroll(text, visible_width)
             for npc in npcs:
                 npc.move("down", 100 * dt)
 
@@ -59,7 +71,7 @@ while True:
             if old.rect.y > 380:
                 old.move("up", 90 * dt)
             old.update((0, 255, 0), current_room_surface, room_offset)
-
+    
     screen.blit(current_room_surface, starting_room.rect.topleft)
 
     if not npcs and delay_phase == 2:

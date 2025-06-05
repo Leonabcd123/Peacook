@@ -1,7 +1,4 @@
 import pygame
-from player import Player
-from starting_room import Starting_Room
-from npc import NPC
 
 pygame.init()
 
@@ -13,12 +10,6 @@ font1 = pygame.font.SysFont("Arial", 25)
 font2 = pygame.font.SysFont("Arial", 50)
 text = "Dad:\nMe and mom are gonna get some milk, Don't do anything stupid, ok?\n(Press Space To Continue)"
 
-player = Player(300, 380)
-starting_room = Starting_Room(player)
-npcs = [NPC(500, 340, font1, screen), NPC(500, 420, font1, screen)]
-old = NPC(380, 650, font1, screen)
-
-room_surface = starting_room.img
 bg = pygame.image.load("bg.webp").convert_alpha()
 bg = pygame.transform.scale(bg, (800, 800))
 skipped = False
@@ -35,3 +26,13 @@ waiting_surface.fill((128, 128, 128, TRANSPARENCY))
 waiting_rect = waiting_surface.get_rect(center=(400, 400))
 waiting_text = font2.render("2000 Years Later...", True, (255, 255, 255))
 waiting_text_rect = waiting_text.get_rect(center=(400, 300))
+
+scroll_width, scroll_height = 650, 135
+scroll_x, scroll_y = 80, 660
+
+visible_width = 0
+unroll_speed = 16
+
+BG_COLOR = (245, 222, 179)
+SCROLL_COLOR = (210, 180, 140)
+HANDLE_COLOR = (139, 69, 19)

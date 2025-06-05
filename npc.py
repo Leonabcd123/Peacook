@@ -1,13 +1,15 @@
 from utilities import *
+from constants import *
 
 class NPC:
-    def __init__(self, x, y, font, screen):
+    def __init__(self, x, y, screen):
         self.rect = pygame.Rect(x, y, 40, 40)
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed_x = 0.0
         self.speed_y = 0.0
-        self.font = font
         self.screen = screen
+        self.started_talking = False
+        self.start_unroll_time = 0
 
     def move(self, direction, amount):
         if direction == "right":
@@ -19,23 +21,40 @@ class NPC:
         elif direction == "down":
             self.speed_y += amount
 
-    def talk(self, text):
+    def talk(self, text, visible_width):
         lines = text.split("\n")
-        y_offset = 700
+        
+        text_surface = pygame.Surface((scroll_width, scroll_height), pygame.SRCALPHA)
+        text_surface.fill((0, 0, 0, 0))
+
+        y_offset = 10
         for line in lines:
-            line_surface = self.font.render(line, True, (0, 0, 0))
-            line_rect = line_surface.get_rect(center=(400, y_offset))
-            self.screen.blit(line_surface, line_rect)
-            y_offset += line_surface.get_height() + 5
+            line_surf = font1.render(line, True, (0, 0, 0))
+            text_surface.blit(line_surf, (10, y_offset))
+            y_offset += line_surf.get_height() + 5
+
+        if visible_width < scroll_width:
+            visible_width += unroll_speed
+
+        handle_width = 20
+        pygame.draw.rect(self.screen, HANDLE_COLOR, (scroll_x - handle_width, scroll_y, handle_width, scroll_height))
+        scroll_rect = pygame.Rect(scroll_x, scroll_y, visible_width, scroll_height)
+        pygame.draw.rect(self.screen, SCROLL_COLOR, scroll_rect)
+        pygame.draw.rect(self.screen, HANDLE_COLOR, (scroll_rect.right, scroll_y, handle_width, scroll_height))
+        pygame.draw.rect(self.screen, (160, 82, 45), scroll_rect, 3)
+
+        self.screen.blit(text_surface, (scroll_x, scroll_y), area=pygame.Rect(0, 0, visible_width, scroll_height))
+
+        return visible_width
+
+
 
     def update(self, color, surface, offset):
         self.pos.x += self.speed_x
         self.pos.y += self.speed_y
 
-        # Update rect position using rounded floats
         self.rect.center = (round(self.pos.x), round(self.pos.y))
 
-        # Reset speeds for next frame
         self.speed_x = 0.0
         self.speed_y = 0.0
 
