@@ -3,7 +3,9 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.rect = pygame.Rect(x, y, 40, 40)
+        self.img = pygame.image.load("peacock1.png").convert_alpha()
+        self.img = pygame.transform.scale(self.img, (100, 100))
+        self.rect = self.img.get_rect(center=(x, y))
         self.velocity = pygame.math.Vector2(0, 0)
         self.speed = 5
         self.can_move = False
@@ -30,4 +32,4 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self, surface, offset):
         local_rect = self.rect.move(-offset[0], -offset[1])
-        pygame.draw.rect(surface, (255, 255, 255), local_rect)
+        surface.blit(self.img, local_rect)
