@@ -10,6 +10,9 @@ class NPC:
         self.screen = screen
         self.started_talking = False
         self.start_unroll_time = 0
+        self.talking_phase = 0
+        self.skipped = False
+        self.closed = False
 
     def move(self, direction, amount):
         if direction == "right":
@@ -21,8 +24,18 @@ class NPC:
         elif direction == "down":
             self.speed_y += amount
 
-    def talk(self, text, visible_width):
-        lines = text.split("\n")
+    def talk(self, text, visible_width, skipped):
+        if skipped and visible_width >= scroll_width:
+            self.talking_phase += 1
+            self.closed = False
+            skipped = False
+
+        if self.talking_phase == len(text):
+            visible_width, self.closed = unroll_scroll(text, visible_width, self.talking_phase - 1, self.closed)
+            return visible_width, skipped
+        
+        parts = text[self.talking_phase]
+        lines = parts.split("\n")
         
         text_surface = pygame.Surface((scroll_width, scroll_height), pygame.SRCALPHA)
         text_surface.fill((0, 0, 0, 0))
@@ -45,7 +58,7 @@ class NPC:
 
         self.screen.blit(text_surface, (scroll_x, scroll_y), area=pygame.Rect(0, 0, visible_width, scroll_height))
 
-        return visible_width
+        return visible_width, skipped
 
 
 

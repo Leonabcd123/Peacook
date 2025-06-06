@@ -14,7 +14,7 @@ old = NPC(380, 650, screen)
 
 
 while True:
-
+    
     dt = clock.tick(fps) / 1000
 
     screen.blit(bg, (0, 0))
@@ -36,9 +36,8 @@ while True:
 
     elif npcs and 375 < npcs[0].rect.x < 381:
         if npcs[0].rect.y == 340:
-            visible_width = npcs[0].talk(text, visible_width)
-        skipped, visible_width = check_skipped(skipped, text, visible_width, npcs)
-        if skipped:
+            visible_width, skipped = npcs[0].talk(dad, visible_width, skipped)
+        if npcs[0].closed:
             for npc in npcs:
                 npc.move("down", 100 * dt)
 
@@ -70,6 +69,9 @@ while True:
         elif delay_phase == 3:
             if old.rect.y > 380:
                 old.move("up", 90 * dt)
+            else:
+                if not old.closed:
+                    visible_width, skipped = old.talk(old_peacock, visible_width, skipped)
             old.update((0, 255, 0), current_room_surface, room_offset)
     
     screen.blit(current_room_surface, starting_room.rect.topleft)

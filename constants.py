@@ -8,7 +8,8 @@ clock = pygame.time.Clock()
 fps = 60
 font1 = pygame.font.SysFont("Arial", 25)
 font2 = pygame.font.SysFont("Arial", 50)
-text = "Dad:\nMe and mom are gonna get some milk, Don't do anything stupid, ok?\n(Press Space To Continue)"
+dad = ["Dad:\nMe and mom are gonna get some milk, Don't do anything stupid, ok?\n(Press Space To Continue)"]
+old_peacock = ["Old Peacock:\nHello Yoshi, I got some bad news for you...\n(Press Space To Continue)", "Old Peacock:\nA cat cooked your parents\n(Press Space To Continue)", "Old Peacock:\nYou have to get revenge!\n(Press Space To Continue)"]
 
 bg = pygame.image.load("bg.webp").convert_alpha()
 bg = pygame.transform.scale(bg, (800, 800))
