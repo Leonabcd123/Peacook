@@ -13,6 +13,10 @@ class NPC:
         self.talking_phase = 0
         self.skipped = False
         self.closed = False
+        self.index = 0
+        self.rows = 0
+        self.done = False
+        self.last_update = pygame.time.get_ticks()
 
     def move(self, direction, amount):
         if direction == "right":
@@ -28,21 +32,30 @@ class NPC:
         if skipped and visible_width >= scroll_width:
             self.talking_phase += 1
             self.closed = False
+            self.done = False
+            self.index = 0
+            self.rows = 0
             skipped = False
 
         if self.talking_phase == len(text):
             visible_width, self.closed = unroll_scroll(text, visible_width, self.talking_phase - 1, self.closed)
             return visible_width, skipped
         
-        parts = text[self.talking_phase]
-        lines = parts.split("\n")
-        
+        now = pygame.time.get_ticks()
+        lines = text[self.talking_phase].split("\n")
+
         text_surface = pygame.Surface((scroll_width, scroll_height), pygame.SRCALPHA)
         text_surface.fill((0, 0, 0, 0))
 
         y_offset = 10
-        for line in lines:
-            line_surf = font1.render(line, True, (0, 0, 0))
+        for i in range(self.rows):
+            line_surf = font1.render(lines[i], True, (0, 0, 0))
+            text_surface.blit(line_surf, (10, y_offset))
+            y_offset += line_surf.get_height() + 5
+
+        if self.rows < len(lines):
+            partial_line = lines[self.rows][:self.index]
+            line_surf = font1.render(partial_line, True, (0, 0, 0))
             text_surface.blit(line_surf, (10, y_offset))
             y_offset += line_surf.get_height() + 5
 
@@ -57,6 +70,15 @@ class NPC:
         pygame.draw.rect(self.screen, (160, 82, 45), scroll_rect, 3)
 
         self.screen.blit(text_surface, (scroll_x, scroll_y), area=pygame.Rect(0, 0, visible_width, scroll_height))
+
+        if visible_width >= scroll_width and not self.done and now > self.last_update + typewriter_speed:
+            self.last_update = now
+            self.index += 1
+            if self.index > len(lines[self.rows]):
+                self.index = 0
+                self.rows += 1
+                if self.rows >= len(lines):
+                    self.done = True
 
         return visible_width, skipped
 

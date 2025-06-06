@@ -14,6 +14,8 @@ old_peacock = ["Old Peacock:\nHello Yoshi, I got some bad news for you...\n(Pres
 bg = pygame.image.load("bg.webp").convert_alpha()
 bg = pygame.transform.scale(bg, (800, 800))
 skipped = False
+typewriter_speed = 25
+
 
 delay_start_time = 0
 delay1_duration = 500
