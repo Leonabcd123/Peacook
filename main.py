@@ -72,12 +72,16 @@ while True:
                     old.move("down", 90 * dt)
                     if not starting_room.rect.colliderect(old.rect):
                         old = None
+                        delay_phase = 4
                 if old:
                     if old.rect.y > 380 and not old.closed:
                         old.move("up", 90 * dt)
                     elif not old.closed:
                         visible_width, skipped = old.talk(old_peacock, visible_width, skipped)
                     old.update((0, 255, 0), current_room_surface, room_offset)
+
+        elif delay_phase == 4:
+            player.can_move = True
             
     
     screen.blit(current_room_surface, starting_room.rect.topleft)

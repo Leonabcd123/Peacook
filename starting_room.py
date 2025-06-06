@@ -11,12 +11,16 @@ class Starting_Room:
         if self.player.rect.right > self.rect.right:
             self.player.rect.right = self.rect.right
             self.player.velocity = pygame.math.Vector2(0, 0)
+            self.player.pos = pygame.math.Vector2(self.player.rect.center)
         if self.player.rect.left < self.rect.left:
             self.player.rect.left = self.rect.left
             self.player.velocity = pygame.math.Vector2(0, 0)
+            self.player.pos = pygame.math.Vector2(self.player.rect.center)
         if self.player.rect.bottom > self.rect.bottom:
             self.player.rect.bottom = self.rect.bottom
             self.player.velocity = pygame.math.Vector2(0, 0)
+            self.player.pos = pygame.math.Vector2(self.player.rect.center)
         if self.player.rect.top < self.rect.top:
             self.player.rect.top = self.rect.top
             self.player.velocity = pygame.math.Vector2(0, 0)
+            self.player.pos = pygame.math.Vector2(self.player.rect.center)
