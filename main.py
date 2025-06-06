@@ -67,12 +67,18 @@ while True:
                 delay_phase = 3
 
         elif delay_phase == 3:
-            if old.rect.y > 380:
-                old.move("up", 90 * dt)
-            else:
-                if not old.closed:
-                    visible_width, skipped = old.talk(old_peacock, visible_width, skipped)
-            old.update((0, 255, 0), current_room_surface, room_offset)
+            if old:
+                if old.closed:
+                    old.move("down", 90 * dt)
+                    if not starting_room.rect.colliderect(old.rect):
+                        old = None
+                if old:
+                    if old.rect.y > 380 and not old.closed:
+                        old.move("up", 90 * dt)
+                    elif not old.closed:
+                        visible_width, skipped = old.talk(old_peacock, visible_width, skipped)
+                    old.update((0, 255, 0), current_room_surface, room_offset)
+            
     
     screen.blit(current_room_surface, starting_room.rect.topleft)
 
