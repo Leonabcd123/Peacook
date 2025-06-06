@@ -28,7 +28,10 @@ while True:
         if event.type == pygame.KEYDOWN:
             if not skipped:
                 if event.key == pygame.K_SPACE and visible_width == scroll_width:
-                    skipped = True
+                    if not skipped_animation:
+                        skipped_animation = True
+                    else:
+                        skipped = True
 
     if npcs and npcs[0].rect.x > 380:
         for npc in npcs:
@@ -36,7 +39,7 @@ while True:
 
     elif npcs and 375 < npcs[0].rect.x < 381:
         if npcs[0].rect.y == 340:
-            visible_width, skipped = npcs[0].talk(dad, visible_width, skipped)
+            visible_width, skipped, skipped_animation = npcs[0].talk(dad, visible_width, skipped, skipped_animation)
         if npcs[0].closed:
             for npc in npcs:
                 npc.move("down", 100 * dt)
@@ -77,7 +80,7 @@ while True:
                     if old.rect.y > 380 and not old.closed:
                         old.move("up", 90 * dt)
                     elif not old.closed:
-                        visible_width, skipped = old.talk(old_peacock, visible_width, skipped)
+                        visible_width, skipped, skipped_animation = old.talk(old_peacock, visible_width, skipped, skipped_animation)
                     old.update((0, 255, 0), current_room_surface, room_offset)
 
         elif delay_phase == 4:

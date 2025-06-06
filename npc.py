@@ -28,18 +28,19 @@ class NPC:
         elif direction == "down":
             self.speed_y += amount
 
-    def talk(self, text, visible_width, skipped):
-        if skipped and visible_width >= scroll_width:
+    def talk(self, text, visible_width, skipped, skipped_animation):
+        if skipped and visible_width == scroll_width:
             self.talking_phase += 1
             self.closed = False
             self.done = False
             self.index = 0
             self.rows = 0
             skipped = False
+            skipped_animation = False
 
         if self.talking_phase == len(text):
             visible_width, self.closed = unroll_scroll(text, visible_width, self.talking_phase - 1, self.closed)
-            return visible_width, skipped
+            return visible_width, skipped, skipped_animation
         
         now = pygame.time.get_ticks()
         lines = text[self.talking_phase].split("\n")
@@ -48,16 +49,23 @@ class NPC:
         text_surface.fill((0, 0, 0, 0))
 
         y_offset = 10
-        for i in range(self.rows):
-            line_surf = font1.render(lines[i], True, (0, 0, 0))
-            text_surface.blit(line_surf, (10, y_offset))
-            y_offset += line_surf.get_height() + 5
 
-        if self.rows < len(lines):
-            partial_line = lines[self.rows][:self.index]
-            line_surf = font1.render(partial_line, True, (0, 0, 0))
-            text_surface.blit(line_surf, (10, y_offset))
-            y_offset += line_surf.get_height() + 5
+        if not skipped_animation:
+            for i in range(self.rows):
+                line_surf = font1.render(lines[i], True, (0, 0, 0))
+                text_surface.blit(line_surf, (10, y_offset))
+                y_offset += line_surf.get_height() + 5
+
+            if self.rows < len(lines):
+                partial_line = lines[self.rows][:self.index]
+                line_surf = font1.render(partial_line, True, (0, 0, 0))
+                text_surface.blit(line_surf, (10, y_offset))
+                y_offset += line_surf.get_height() + 5
+        else:
+            for line in lines:
+                line_surf = font1.render(line, True, (0, 0, 0))
+                text_surface.blit(line_surf, (10, y_offset))
+                y_offset += line_surf.get_height() + 5
 
         if visible_width < scroll_width:
             visible_width += unroll_speed
@@ -80,7 +88,7 @@ class NPC:
                 if self.rows >= len(lines):
                     self.done = True
 
-        return visible_width, skipped
+        return visible_width, skipped, skipped_animation
 
 
 
