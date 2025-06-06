@@ -31,7 +31,7 @@ scroll_width, scroll_height = 650, 135
 scroll_x, scroll_y = 80, 660
 
 visible_width = 0
-unroll_speed = 16
+unroll_speed = 13
 
 BG_COLOR = (245, 222, 179)
 SCROLL_COLOR = (210, 180, 140)

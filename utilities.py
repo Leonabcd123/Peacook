@@ -29,3 +29,11 @@ def unroll_scroll(text, visible_width):
       screen.blit(text_surface, (scroll_x, scroll_y), area=pygame.Rect(0, 0, visible_width, scroll_height))
 
     return visible_width
+
+def check_skipped(skipped, text, visible_width, npcs):
+  if skipped:
+    visible_width = unroll_scroll(text, visible_width)
+    if visible_width == 0 and not npcs:
+      skipped = False
+
+  return skipped, visible_width

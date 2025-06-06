@@ -27,7 +27,7 @@ while True:
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if not skipped:
-                if event.key == pygame.K_SPACE and npcs[0].rect.x <= 440:
+                if event.key == pygame.K_SPACE and visible_width == scroll_width:
                     skipped = True
 
     if npcs and npcs[0].rect.x > 380:
@@ -37,8 +37,8 @@ while True:
     elif npcs and 375 < npcs[0].rect.x < 381:
         if npcs[0].rect.y == 340:
             visible_width = npcs[0].talk(text, visible_width)
+        skipped, visible_width = check_skipped(skipped, text, visible_width, npcs)
         if skipped:
-            visible_width = unroll_scroll(text, visible_width)
             for npc in npcs:
                 npc.move("down", 100 * dt)
 
