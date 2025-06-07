@@ -1,8 +1,9 @@
 from utilities import *
 from constants import *
 
-class NPC:
-    def __init__(self, x, y, screen):
+class NPC(pygame.sprite.Sprite):
+    def __init__(self, x, y, screen, color):
+        super().__init__()
         self.rect = pygame.Rect(x, y, 40, 40)
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed_x = 0.0
@@ -17,6 +18,7 @@ class NPC:
         self.rows = 0
         self.done = False
         self.last_update = pygame.time.get_ticks()
+        self.color = color
 
     def move(self, direction, amount):
         if direction == "right":
@@ -92,7 +94,9 @@ class NPC:
 
 
 
-    def update(self, color, surface, offset):
+    def update(self, **kwargs):
+        surface = kwargs.get("surface")
+        offset = kwargs.get("offset")
         self.pos.x += self.speed_x
         self.pos.y += self.speed_y
 
@@ -104,4 +108,4 @@ class NPC:
         visible_area = pygame.Rect(offset[0], offset[1], surface.get_width(), surface.get_height())
         if self.rect.colliderect(visible_area):
             local_rect = self.rect.move(-offset[0], -offset[1])
-            pygame.draw.rect(surface, color, local_rect)
+            pygame.draw.rect(surface, self.color, local_rect)

@@ -9,8 +9,11 @@ import sys
 player = Player(300, 380)
 starting_room = Starting_Room(player)
 room_surface = starting_room.img
-npcs = [NPC(500, 340, screen), NPC(500, 420, screen)]
-old = NPC(380, 650, screen)
+npcs = [NPC(500, 340, screen, (0, 0, 255)), NPC(500, 420, screen, (255, 0, 0))]
+old = NPC(380, 650, screen, (0, 255, 0))
+visible_sprites = pygame.sprite.Group()
+visible_sprites.add(player, old, npcs)
+
 
 
 while True:
@@ -46,11 +49,13 @@ while True:
 
     room_offset = (starting_room.rect.left, starting_room.rect.top)
 
-    for i, npc in enumerate(npcs):
-        color = (0, 0, 255) if i == 0 else (255, 0, 0)
-        npc.update(color, current_room_surface, room_offset)
+    for i, sprite in enumerate(visible_sprites):
+        sprite.update(
+            dt=dt,
+            surface=current_room_surface,
+            offset=room_offset
+        )
 
-    player.update(dt)
     starting_room.update()
     player.draw(current_room_surface, room_offset)
 
@@ -81,7 +86,6 @@ while True:
                         old.move("up", 90 * dt)
                     elif not old.closed:
                         visible_width, skipped, skipped_animation = old.talk(old_peacock, visible_width, skipped, skipped_animation)
-                    old.update((0, 255, 0), current_room_surface, room_offset)
 
         elif delay_phase == 4:
             player.can_move = True

@@ -25,7 +25,8 @@ class Player(pygame.sprite.Sprite):
         if self.velocity.length_squared() > 0:
             self.velocity = self.velocity.normalize() * self.speed
 
-    def update(self, dt):
+    def update(self, **kwargs):
+        dt = kwargs.get("dt", 0)
         if self.can_move:
             self.move()
         self.pos += self.velocity * dt
