@@ -17,7 +17,6 @@ skipped = False
 skipped_animation = False
 typewriter_speed = 25
 
-
 delay_start_time = 0
 delay1_duration = 500
 delay2_duration = 3000

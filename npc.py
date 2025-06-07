@@ -4,7 +4,9 @@ from constants import *
 class NPC(pygame.sprite.Sprite):
     def __init__(self, x, y, screen, color):
         super().__init__()
-        self.rect = pygame.Rect(x, y, 40, 40)
+        self.image = pygame.image.load("peacock1.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (100, 100))
+        self.rect = self.image.get_rect(center=(x, y))
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed_x = 0.0
         self.speed_y = 0.0
@@ -95,8 +97,6 @@ class NPC(pygame.sprite.Sprite):
 
 
     def update(self, **kwargs):
-        surface = kwargs.get("surface")
-        offset = kwargs.get("offset")
         self.pos.x += self.speed_x
         self.pos.y += self.speed_y
 
@@ -104,8 +104,3 @@ class NPC(pygame.sprite.Sprite):
 
         self.speed_x = 0.0
         self.speed_y = 0.0
-
-        visible_area = pygame.Rect(offset[0], offset[1], surface.get_width(), surface.get_height())
-        if self.rect.colliderect(visible_area):
-            local_rect = self.rect.move(-offset[0], -offset[1])
-            pygame.draw.rect(surface, self.color, local_rect)
