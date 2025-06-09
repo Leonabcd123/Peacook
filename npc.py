@@ -1,5 +1,5 @@
 from utilities import *
-from constants import *
+
 
 class NPC(pygame.sprite.Sprite):
     def __init__(self, x, y, screen, color):

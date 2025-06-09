@@ -1,5 +1,3 @@
-from utilities import *
-from constants import *
 from npc import *
 from player import *
 from starting_room import *
@@ -29,7 +27,7 @@ while True:
         if event.type == pygame.KEYDOWN:
             if not skipped:
                 if event.key == pygame.K_SPACE and visible_width == scroll_width:
-                    if not skipped_animation:
+                    if not npcs[0].done and not skipped_animation:
                         skipped_animation = True
                     else:
                         skipped = True
